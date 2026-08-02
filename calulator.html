@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#ffffff;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+#calc{
+    background:#f7f7f7;
+    padding:25px;
+    width:360px;
+    border-radius:15px;
+    box-shadow:0px 8px 20px rgba(0,0,0,.6);
+}
+
+h2{
+    text-align:center;
+    color:black;
+    margin-bottom:20px;
+    font-size:30px;
+}
+
+#display{
+    width:100%;
+    height:70px;
+    border:3px solid black;
+    border-radius:15px;
+    margin-bottom:18px;
+    font-size:24px;
+    text-align:right;
+    padding:10px;
+    outline:none;
+}
+
+.row{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+button{
+    flex:1;
+    height:55px;
+    font-size:24px;
+    cursor:pointer;
+    border:2px solid black;
+    border-radius:15px;
+}
+
+#clearBtn,
+#ceBtn{
+    background:#f2a360;
+}
+
+#mulBtn{
+    background:#fd7d70;
+}
+
+#divBtn{
+    background:#f2a360;
+    border-radius:50%;
+}
+
+#plusBtn{
+    background:#fca305;
+    border-radius:50%;
+}
+
+#minusBtn{
+    background:#1d6b37;
+    color:white;
+    border-radius:50%;
+}
+
+#equalBtn{
+    background:#d97192;
+    border-radius:50%;
+}
+
+#percentBtn,
+#dotBtn{
+    background:#008b8b;
+    color:white;
+    border-radius:50%;
+}
+
+
+@media (max-width:768px){
+    #calc{
+        width:90%;
+        padding:20px;
+    }
+    #display{
+        height:65px;
+        font-size:22px;
+    }
+    button{
+        height:50px;
+        font-size:20px;
+    }
+    h2{
+        font-size:28px;
+    }
+}
+
+@media (max-width:480px){
+    #calc{
+        width:95%;
+        padding:15px;
+    }
+    #display{
+        height:55px;
+        font-size:18px;
+    }
+    button{
+        height:45px;
+        font-size:18px;
+    }
+    h2{
+        font-size:24px;
+        margin-bottom:15px;
+    }
+    .row{
+        gap:8px;
+        margin-bottom:8px;
+    }
+}
+
+@media (max-width:320px){
+    #calc{
+        width:98%;
+        padding:12px;
+    }
+    #display{
+        height:50px;
+        font-size:16px;
+    }
+    button{
+        height:40px;
+        font-size:16px;
+    }
+    h2{
+        font-size:20px;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div id="calc">
+
+<h2>Calculator</h2>
+
+<input type="text" id="display" readonly>
+
+<div class="row">
+<button id="clearBtn">Clear</button>
+<button id="ceBtn">CE</button>
+<button id="mulBtn">*</button>
+</div>
+
+<div class="row">
+<button id="btn7">7</button>
+<button id="btn8">8</button>
+<button id="btn9">9</button>
+<button id="divBtn">/</button>
+</div>
+
+<div class="row">
+<button id="btn4">4</button>
+<button id="btn5">5</button>
+<button id="btn6">6</button>
+<button id="plusBtn">+</button>
+</div>
+
+<div class="row">
+<button id="btn1">1</button>
+<button id="btn2">2</button>
+<button id="btn3">3</button>
+<button id="minusBtn">-</button>
+</div>
+
+<div class="row">
+<button id="percentBtn">%</button>
+<button id="btn0">0</button>
+<button id="dotBtn">.</button>
+<button id="equalBtn">=</button>
+</div>
+
+</div>
+
+<script>
+var display = document.getElementById("display");
+
+function handleChange(value){
+    display.value += value;
+}
+
+function handleClear(){
+    display.value = "";
+}
+
+// CE = remove last char
+function handleCE(){
+    display.value = display.value.slice(0, -1);
+}
+
+function handleEqual(){
+    try{
+        display.value = eval(display.value);
+    }
+    catch{
+        display.value = "Error";
+    }
+}
+
+// Keyboard Support
+document.addEventListener("keydown", function(event){
+    const key = event.key;
+
+    if(!isNaN(key)){
+        handleChange(key);
+    }
+    else if(["+", "-", "*", "/", ".", "%"].includes(key)){
+        handleChange(key);
+    }
+    else if(key === "Enter"){
+        handleEqual();
+    }
+    else if(key === "Backspace"){
+        handleCE();
+    }
+    else if(key === "Escape"){
+        handleClear();
+    }
+});
+
+// Button Clicks
+document.getElementById("clearBtn").addEventListener("click", handleClear);
+document.getElementById("ceBtn").addEventListener("click", handleCE);
+
+document.getElementById("mulBtn").addEventListener("click", () => handleChange("*"));
+document.getElementById("divBtn").addEventListener("click", () => handleChange("/"));
+document.getElementById("plusBtn").addEventListener("click", () => handleChange("+"));
+document.getElementById("minusBtn").addEventListener("click", () => handleChange("-"));
+document.getElementById("percentBtn").addEventListener("click", () => handleChange("%"));
+document.getElementById("dotBtn").addEventListener("click", () => handleChange("."));
+
+// Numbers 0-9 Event Listeners added successfully
+document.getElementById("btn0").addEventListener("click", () => handleChange("0"));
+document.getElementById("btn1").addEventListener("click", () => handleChange("1"));
+document.getElementById("btn2").addEventListener("click", () => handleChange("2"));
+document.getElementById("btn3").addEventListener("click", () => handleChange("3"));
+document.getElementById("btn4").addEventListener("click", () => handleChange("4"));
+document.getElementById("btn5").addEventListener("click", () => handleChange("5"));
+document.getElementById("btn6").addEventListener("click", () => handleChange("6"));
+document.getElementById("btn7").addEventListener("click", () => handleChange("7"));
+document.getElementById("btn8").addEventListener("click", () => handleChange("8"));
+document.getElementById("btn9").addEventListener("click", () => handleChange("9"));
+
+document.getElementById("equalBtn").addEventListener("click", handleEqual);
+</script>
+
+</body>
+</html>
